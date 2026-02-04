@@ -1,4 +1,5 @@
-/* App.css - Adjusted for progress bar */
+/* App.css - Fixed for iPhone 15 */
+/* App.css - Updated with accurate video height */
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +13,7 @@ body {
   background: #000;
   color: #fff;
   height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height */
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
@@ -21,11 +23,74 @@ body {
 
 .smartshorts-app {
   height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height */
   display: flex;
   flex-direction: column;
   background: linear-gradient(180deg, #000000 0%, #0a0a0c 100%);
   position: relative;
   overflow: hidden;
+}
+
+/* Hide scrollbar globally */
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* iPhone safe area adjustments */
+@supports (padding: max(0px)) {
+  .smartshorts-app {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Responsive Design - Fixed heights */
+@media (max-width: 430px) {
+  body {
+    height: 100dvh;
+  }
+  
+  .smartshorts-app {
+    height: 100dvh;
+  }
+  
+  /* App.css */
+.video-wrapper {
+  height: calc(100dvh - 128px) !important;
+  min-height: calc(100dvh - 128px) !important;
+  max-height: calc(100dvh - 128px) !important;
+}
+
+@media (max-width: 430px) {
+  .video-wrapper {
+    height: calc(100dvh - 116px) !important;
+    min-height: calc(100dvh - 116px) !important;
+    max-height: calc(100dvh - 116px) !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .video-wrapper {
+    height: calc(100dvh - 104px) !important;
+    min-height: calc(100dvh - 104px) !important;
+    max-height: calc(100dvh - 104px) !important;
+  }
+}
+}
+
+/* iPhone 15 Dynamic Island safe area */
+@supports (padding: max(0px)) {
+  .smartshorts-app {
+    padding-top: 0; /* Header handles its own safe area */
+    padding-bottom: 0; /* Footer handles its own safe area */
+  }
 }
 
 /* Enhanced scrollbar styling for desktop */
@@ -97,39 +162,13 @@ textarea {
   user-select: text;
 }
 
-/* iPhone notch/pill and safe areas */
-@supports (padding: max(0px)) {
-  .app-header {
-    padding-top: max(14px, env(safe-area-inset-top));
-    padding-left: max(20px, env(safe-area-inset-left));
-    padding-right: max(20px, env(safe-area-inset-right));
-  }
-
-  .upload-footer {
-    padding-bottom: max(14px, env(safe-area-inset-bottom));
-    padding-left: max(18px, env(safe-area-inset-left));
-    padding-right: max(18px, env(safe-area-inset-right));
-  }
-
-  .video-wrapper {
-    min-height: calc(
-      100vh - 128px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-    );
-  }
-}
-
 /* Responsive Design */
 @media (max-width: 430px) {
-  .app-header {
-    padding: 12px 16px;
-    height: 58px;
+  .smartshorts-app {
+    padding-top: 0;
+    padding-bottom: 0;
   }
-
-  .upload-footer {
-    padding: 12px 16px;
-    height: 58px;
-  }
-
+  
   .video-wrapper {
     min-height: calc(100vh - 116px);
   }

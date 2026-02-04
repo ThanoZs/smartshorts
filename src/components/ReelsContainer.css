@@ -1,4 +1,5 @@
 /* components/ReelsContainer.css - Enhanced Professional Version */
+/* components/ReelsContainer.css - Updated to remove scrollbar */
 .reels-container {
   flex: 1;
   overflow-y: auto;
@@ -8,7 +9,18 @@
   scroll-behavior: smooth;
   position: relative;
   background: linear-gradient(180deg, #000000 0%, #0a0a0c 100%);
+  
+  /* Hide scrollbar for all browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
+
+.reels-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Remove all scrollbar related styles */
+/* Delete all the scrollbar related CSS from the file */
 
 /* Custom scrollbar for desktop */
 @media (hover: hover) and (pointer: fine) {
@@ -31,9 +43,9 @@
   }
 }
 
-/* Empty State - Enhanced */
+/* components/ReelsContainer.css - Updated empty state */
 .empty-state {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 128px); /* Match video-wrapper height */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,6 +63,21 @@
   animation: emptyStateFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Responsive adjustments for ReelsContainer */
+@media (max-width: 430px) {
+  .empty-state {
+    height: calc(100vh - 116px); /* Match responsive video-wrapper height */
+    padding: 40px 24px;
+  }
+}
+
+/* Landscape mode adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .empty-state {
+    height: calc(100vh - 104px); /* Match landscape video-wrapper height */
+    padding: 24px 28px;
+  }
+}
 @keyframes emptyStateFadeIn {
   from {
     opacity: 0;

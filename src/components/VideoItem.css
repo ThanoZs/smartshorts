@@ -1,4 +1,4 @@
-/* components/VideoItem.css - Updated with progress bar */
+/* components/VideoItem.css - Fixed height calculation */
 .video-wrapper {
   width: 100%;
   scroll-snap-align: start;
@@ -8,8 +8,29 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  min-height: calc(100vh - 120px);
+  height: calc(100vh - 128px); /* Correct calculation: 100vh - (header64 + footer64) */
+  min-height: calc(100vh - 128px);
+  max-height: calc(100vh - 128px);
   margin: 0 auto;
+  overflow: hidden;
+}
+
+/* Responsive adjustments for VideoItem */
+@media (max-width: 430px) {
+  .video-wrapper {
+    height: calc(100vh - 116px); /* 100vh - (header58 + footer58) */
+    min-height: calc(100vh - 116px);
+    max-height: calc(100vh - 116px);
+  }
+}
+
+/* Landscape mode adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .video-wrapper {
+    height: calc(100vh - 104px); /* 100vh - (header52 + footer52) */
+    min-height: calc(100vh - 104px);
+    max-height: calc(100vh - 104px);
+  }
 }
 
 .video-container {
@@ -28,6 +49,83 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* components/VideoItem.css - Fixed progress bar position */
+/* Video Progress Bar - FIXED AT TOP OF FOOTER */
+.video-progress-container {
+  position: fixed; /* Changed to fixed */
+  bottom: 64px; /* Positioned exactly at top of footer */
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  z-index: 90; /* Lower than footer but above videos */
+  transition: all 0.2s ease;
+  border-radius: 0;
+  margin: 0; /* Remove any margin */
+  padding: 0; /* Remove any padding */
+}
+
+/* Responsive adjustments for VideoItem */
+@media (max-width: 430px) {
+  .video-progress-container {
+    bottom: 58px; /* Adjusted for smaller footer */
+  }
+}
+
+/* Landscape mode adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .video-progress-container {
+    bottom: 52px;
+  }
+}
+
+/* iPhone 15 Pro specific adjustments */
+@media (max-width: 430px) and (min-height: 800px) {
+  .video-progress-container {
+    bottom: 70px;
+  }
+}
+
+.video-progress-container:hover {
+  height: 6px;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.video-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff0844, #ff6b6b);
+  width: 0%;
+  transition: width 0.1s linear;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 8, 68, 0.3);
+  border-radius: 0;
+}
+
+/* Remove scrollbar for all browsers */
+.reels-container {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.reels-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Responsive adjustments for VideoItem */
+@media (max-width: 430px) {
+  .video-wrapper {
+    height: calc(100vh - 116px); /* Adjusted for smaller header/footer */
+    min-height: calc(100vh - 116px);
+  }
+  
+  .video-progress-container {
+    bottom: 58px; /* Adjusted for smaller footer */
+  }
 }
 
 .play-overlay {
@@ -53,11 +151,11 @@
 
 .video-info {
   position: absolute;
-  bottom: 12px;
+  top: calc(16px + env(safe-area-inset-top, 0px)); /* Moved to top, with notch offset */
   left: 0;
   right: 0;
   padding: 16px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+  background: linear-gradient(rgba(0, 0, 0, 0.8), transparent);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -97,7 +195,7 @@
 /* Remove Video Button */
 .remove-video-btn {
   position: absolute;
-  top: 16px;
+  top: calc(16px + env(safe-area-inset-top, 0px));
   right: 16px;
   width: 44px;
   height: 44px;
@@ -160,23 +258,24 @@
   opacity: 1;
 }
 
-/* Video Progress Bar */
+/* Video Progress Bar - POSITIONED ABOVE FOOTER */
 .video-progress-container {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 70px; /* Positioned above footer */
+  left: 16px;
+  right: 16px;
   height: 4px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   cursor: pointer;
-  z-index: 7;
-  transition: height 0.2s ease;
+  z-index: 9;
+  transition: all 0.2s ease;
+  border-radius: 2px;
 }
 
 .video-progress-container:hover {
   height: 6px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .video-progress-bar {
@@ -187,7 +286,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(255, 8, 68, 0.3);
-  border-radius: 0 2px 2px 0;
+  border-radius: 2px;
 }
 
 .video-progress-bar::after {
@@ -217,12 +316,12 @@
 
 .progress-time {
   position: absolute;
-  bottom: 8px;
-  right: 16px;
+  bottom: 10px;
+  right: 0;
   font-size: 11px;
   font-weight: 600;
   color: white;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(8px);
   padding: 4px 8px;
   border-radius: 8px;
@@ -274,7 +373,7 @@
 /* Responsive adjustments for VideoItem */
 @media (max-width: 430px) {
   .video-wrapper {
-    min-height: calc(100vh - 112px);
+    min-height: calc(100vh - 116px);
   }
 
   .play-icon {
@@ -282,8 +381,8 @@
   }
 
   .video-info {
+    top: calc(12px + env(safe-area-inset-top, 0px));
     padding: 12px;
-    bottom: 8px;
   }
 
   .video-name {
@@ -291,7 +390,7 @@
   }
 
   .remove-video-btn {
-    top: 12px;
+    top: calc(12px + env(safe-area-inset-top, 0px));
     right: 12px;
     width: 40px;
     height: 40px;
@@ -307,7 +406,10 @@
   }
 
   .video-progress-container {
+    bottom: 62px; /* Adjusted for smaller footer */
     height: 3px;
+    left: 12px;
+    right: 12px;
   }
 
   .video-progress-container:hover {
@@ -317,16 +419,30 @@
   .progress-time {
     font-size: 10px;
     padding: 3px 6px;
-    bottom: 6px;
-    right: 12px;
+    bottom: 8px;
+  }
+}
+
+/* iPhone 15 Pro specific adjustments */
+@media (max-width: 430px) and (min-height: 800px) {
+  .video-info {
+    top: calc(20px + env(safe-area-inset-top, 0px));
+  }
+  
+  .remove-video-btn {
+    top: calc(20px + env(safe-area-inset-top, 0px));
+  }
+  
+  .video-progress-container {
+    bottom: 70px;
   }
 }
 
 /* Landscape mode adjustments */
 @media (orientation: landscape) and (max-height: 500px) {
   .video-info {
+    top: calc(8px + env(safe-area-inset-top, 0px));
     padding: 8px 12px;
-    bottom: 6px;
   }
 
   .video-name {
@@ -334,14 +450,22 @@
   }
 
   .remove-video-btn {
-    top: 8px;
+    top: calc(8px + env(safe-area-inset-top, 0px));
     right: 8px;
     width: 36px;
     height: 36px;
   }
 
   .video-progress-container {
+    bottom: 52px;
     height: 2px;
+    left: 8px;
+    right: 8px;
+  }
+  
+  .progress-time {
+    font-size: 9px;
+    padding: 2px 4px;
   }
 }
 

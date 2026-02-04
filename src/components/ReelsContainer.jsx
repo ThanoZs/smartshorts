@@ -1,4 +1,4 @@
-// components/ReelsContainer.jsx - Updated with auto-play fix
+// components/ReelsContainer.jsx - Updated with scrollbar removal
 import React, { useEffect } from "react";
 import VideoItem from "./VideoItem";
 import "./ReelsContainer.css";
@@ -158,7 +158,15 @@ const ReelsContainer = ({
   }, [videos]);
 
   return (
-    <main className="reels-container" ref={containerRef}>
+    <main 
+      className="reels-container" 
+      ref={containerRef}
+      style={{ 
+        overflowY: 'auto',
+        scrollbarWidth: 'none', /* Firefox */
+        msOverflowStyle: 'none', /* IE and Edge */
+      }}
+    >
       {videos.length > 0 ? (
         videos.map((video, index) => (
           <VideoItem
