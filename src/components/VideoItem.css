@@ -1,0 +1,194 @@
+/* components/VideoItem.css */
+.video-wrapper {
+  width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  min-height: calc(100vh - 120px);
+  margin: 0 auto;
+}
+
+.video-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  width: 100%;
+  height: 100%;
+}
+
+.reel-video {
+  display: block;
+  background: #000;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.play-icon {
+  font-size: 48px;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+}
+
+.video-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.video-name {
+  font-size: 14px;
+  opacity: 0.9;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 12px;
+}
+
+.video-indicators {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.status-indicator,
+.loop-indicator {
+  font-size: 16px;
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.loop-indicator {
+  animation: spin 3s linear infinite;
+}
+
+/* Remove Video Button */
+.remove-video-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  padding: 0;
+  animation: slideInRight 0.3s ease;
+}
+
+.remove-video-btn:hover {
+  background: rgba(255, 0, 0, 0.3);
+  border-color: rgba(255, 0, 0, 0.5);
+  transform: scale(1.1);
+}
+
+.remove-video-btn:active {
+  transform: scale(0.95);
+}
+
+.remove-icon {
+  width: 24px;
+  height: 24px;
+  fill: #ff6b6b;
+  transition: fill 0.3s ease;
+}
+
+.remove-video-btn:hover .remove-icon {
+  fill: #ff0000;
+}
+
+/* Tooltip for remove button */
+.remove-video-btn::after {
+  content: "Remove Video";
+  position: absolute;
+  top: 50%;
+  right: 50px;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+}
+
+.remove-video-btn:hover::after {
+  opacity: 1;
+}
+
+/* Responsive adjustments for VideoItem */
+@media (max-width: 430px) {
+  .video-wrapper {
+    min-height: calc(100vh - 112px);
+  }
+
+  .play-icon {
+    font-size: 36px;
+  }
+
+  .video-info {
+    padding: 12px;
+  }
+
+  .video-name {
+    font-size: 12px;
+  }
+
+  .remove-video-btn {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .remove-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .remove-video-btn::after {
+    display: none;
+  }
+}

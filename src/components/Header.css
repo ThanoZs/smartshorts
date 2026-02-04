@@ -1,0 +1,329 @@
+/* components/Header.css - Enhanced Professional Version */
+.app-header {
+  padding: 14px 20px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.98) 0%,
+    rgba(10, 10, 12, 0.95) 100%
+  );
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 64px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-title {
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff0844 0%, #ff6b6b 50%, #ffaa00 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.8px;
+  text-shadow: 0 0 30px rgba(255, 8, 68, 0.3);
+  animation: gradientShift 8s ease infinite;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-title::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  width: 4px;
+  height: 60%;
+  background: linear-gradient(180deg, #ff0844, #ff6b6b);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px rgba(255, 8, 68, 0.5);
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.header-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 68, 0.15) 0%,
+    rgba(255, 107, 107, 0.1) 100%
+  );
+  border-radius: 20px;
+  border: 1px solid rgba(255, 0, 68, 0.25);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 
+    0 4px 12px rgba(255, 0, 68, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  animation: timerPulse 2s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.timer-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+}
+
+@keyframes timerPulse {
+  0%, 100% {
+    box-shadow: 
+      0 4px 12px rgba(255, 0, 68, 0.15),
+      inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 6px 16px rgba(255, 0, 68, 0.25),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.timer-icon {
+  font-size: 14px;
+  opacity: 0.95;
+  animation: timerBounce 1s ease-in-out infinite;
+}
+
+@keyframes timerBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.timer-text {
+  color: #ff6b6b;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 38px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.control-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.control-btn:hover::before {
+  width: 200%;
+  height: 200%;
+}
+
+.control-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.control-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.control-btn.active {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 68, 0.18) 0%,
+    rgba(255, 107, 107, 0.12) 100%
+  );
+  border-color: rgba(255, 0, 68, 0.35);
+  color: #ff6b6b;
+  box-shadow: 
+    0 4px 16px rgba(255, 0, 68, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  animation: activeGlow 2s ease-in-out infinite;
+}
+
+@keyframes activeGlow {
+  0%, 100% {
+    box-shadow: 
+      0 4px 16px rgba(255, 0, 68, 0.25),
+      inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 6px 20px rgba(255, 0, 68, 0.35),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  }
+}
+
+.btn-icon {
+  font-size: 15px;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.control-btn:hover .btn-icon {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.control-btn.active .btn-icon {
+  animation: iconSpin 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes iconSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.btn-text {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive adjustments for Header */
+@media (max-width: 430px) {
+  .app-header {
+    padding: 12px 16px;
+    height: 58px;
+  }
+
+  .app-title {
+    font-size: 19px;
+  }
+
+  .app-title::before {
+    left: -10px;
+    width: 3px;
+  }
+
+  .header-controls {
+    gap: 8px;
+  }
+
+  .control-btn {
+    padding: 9px 10px;
+    min-height: 36px;
+  }
+
+  .btn-text {
+    display: none;
+  }
+
+  .timer-display {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .app-header {
+    border-bottom-width: 2px;
+  }
+
+  .control-btn {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .app-title,
+  .timer-display,
+  .control-btn,
+  .btn-icon,
+  .timer-icon {
+    animation: none !important;
+  }
+
+  .control-btn {
+    transition: none;
+  }
+}
