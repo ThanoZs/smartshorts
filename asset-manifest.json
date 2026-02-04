@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/smartshorts/static/css/main.70062dcb.css",
+    "main.js": "/smartshorts/static/js/main.7eaa9f92.js",
+    "index.html": "/smartshorts/index.html",
+    "main.70062dcb.css.map": "/smartshorts/static/css/main.70062dcb.css.map",
+    "main.7eaa9f92.js.map": "/smartshorts/static/js/main.7eaa9f92.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.70062dcb.css",
+    "static/js/main.7eaa9f92.js"
+  ]
+}
