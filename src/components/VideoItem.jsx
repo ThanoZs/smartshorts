@@ -1,5 +1,5 @@
-// components/VideoItem.jsx - Updated with remove button
-import React, { useState } from "react";
+// components/VideoItem.jsx - Updated with progress bar and auto-play fix
+import React, { useState, useEffect } from "react";
 import "./VideoItem.css";
 
 const VideoItem = ({
@@ -11,8 +11,34 @@ const VideoItem = ({
   onVideoEnd,
   onRemove,
 }) => {
-  const [isPlaying, setIsPlaying] = useState(isCurrent);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [showRemoveBtn, setShowRemoveBtn] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  // Auto-play when video becomes current
+  useEffect(() => {
+    const videoElement = videoRefs.current[index];
+    if (!videoElement) return;
+
+    if (isCurrent) {
+      // Always play when video becomes current
+      const playPromise = videoElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Autoplay prevented:", error);
+        });
+      }
+      setIsPlaying(true);
+      setShowRemoveBtn(true);
+    } else {
+      // Don't pause when video is not current
+      // Let it continue playing if it was already playing
+      if (videoElement.paused) {
+        setIsPlaying(false);
+      }
+    }
+  }, [isCurrent, index, videoRefs]);
 
   const handleVideoTouch = () => {
     const videoElement = videoRefs.current[index];
@@ -23,11 +49,13 @@ const VideoItem = ({
         .play()
         .then(() => {
           setIsPlaying(true);
+          setShowRemoveBtn(true);
         })
         .catch(console.error);
     } else {
       videoElement.pause();
       setIsPlaying(false);
+      setShowRemoveBtn(false);
     }
   };
 
@@ -39,6 +67,39 @@ const VideoItem = ({
   const handleVideoPause = () => {
     setIsPlaying(false);
     setShowRemoveBtn(false);
+  };
+
+  const handleTimeUpdate = () => {
+    const videoElement = videoRefs.current[index];
+    if (videoElement) {
+      setCurrentTime(videoElement.currentTime);
+      if (videoElement.duration && !isNaN(videoElement.duration)) {
+        setDuration(videoElement.duration);
+      }
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    const videoElement = videoRefs.current[index];
+    if (videoElement && videoElement.duration) {
+      setDuration(videoElement.duration);
+    }
+  };
+
+  const handleProgressClick = (e) => {
+    e.stopPropagation(); // Don't trigger video play/pause
+    const videoElement = videoRefs.current[index];
+    if (!videoElement || !duration) return;
+
+    const progressBar = e.currentTarget;
+    const rect = progressBar.getBoundingClientRect();
+    const clickPosition = e.clientX - rect.left;
+    const progressBarWidth = progressBar.clientWidth;
+    const percentage = Math.min(Math.max(clickPosition / progressBarWidth, 0), 1);
+    const newTime = percentage * duration;
+
+    videoElement.currentTime = newTime;
+    setCurrentTime(newTime);
   };
 
   const handleRemoveClick = (e) => {
@@ -89,6 +150,14 @@ const VideoItem = ({
     }
   };
 
+  const formatTime = (seconds) => {
+    if (!seconds || isNaN(seconds)) return "0:00";
+    
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
     <div
       id={`video-wrapper-${index}`}
@@ -107,6 +176,8 @@ const VideoItem = ({
           onEnded={onVideoEnd}
           onPlay={handleVideoPlay}
           onPause={handleVideoPause}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
           muted={!isCurrent}
           loop={!isLooping}
         />
@@ -128,11 +199,25 @@ const VideoItem = ({
           </button>
         )}
 
+        {/* Play Overlay */}
         {!isPlaying && (
           <div className="play-overlay">
             <div className="play-icon">▶️</div>
           </div>
         )}
+
+        {/* Video Progress Bar */}
+        <div className="video-progress-container" onClick={handleProgressClick}>
+          <div 
+            className="video-progress-bar" 
+            style={{ 
+              width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' 
+            }}
+          />
+          <div className="progress-time">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </div>
+        </div>
       </div>
 
       <div className="video-info">

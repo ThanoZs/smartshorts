@@ -1,4 +1,4 @@
-// App.jsx - Updated to pass setVideos to ReelsContainer
+// App.jsx - Updated with all fixes
 import React, { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
 import ReelsContainer from "./components/ReelsContainer";
@@ -99,6 +99,11 @@ const SmartShorts = () => {
     };
   }, [videos]);
 
+  // Reset videoRefs when videos array changes
+  useEffect(() => {
+    videoRefs.current = videoRefs.current.slice(0, videos.length);
+  }, [videos]);
+
   return (
     <div className="smartshorts-app">
       <Header
@@ -111,7 +116,7 @@ const SmartShorts = () => {
 
       <ReelsContainer
         videos={videos}
-        setVideos={setVideos} // Pass setVideos for removal
+        setVideos={setVideos}
         currentVideoIndex={currentVideoIndex}
         setCurrentVideoIndex={setCurrentVideoIndex}
         isLooping={isLooping}

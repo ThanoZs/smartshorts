@@ -1,4 +1,4 @@
-// components/ReelsContainer.jsx - Updated with remove function
+// components/ReelsContainer.jsx - Updated with auto-play fix
 import React, { useEffect } from "react";
 import VideoItem from "./VideoItem";
 import "./ReelsContainer.css";
@@ -12,7 +12,7 @@ const ReelsContainer = ({
   containerRef,
   isTimerActive,
   setTimerPopup,
-  setVideos, // Add this prop to update videos state
+  setVideos,
 }) => {
   const handleVideoEnd = (index) => {
     const video = videoRefs.current[index];
@@ -116,22 +116,21 @@ const ReelsContainer = ({
     }
 
     if (currentIndex !== currentVideoIndex) {
-      // Pause previous video
-      if (videoRefs.current[currentVideoIndex]) {
-        videoRefs.current[currentVideoIndex].pause();
-      }
-
-      // Play new current video
-      if (videoRefs.current[currentIndex]) {
-        const playPromise = videoRefs.current[currentIndex].play();
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.log("Autoplay prevented:", error);
-          });
-        }
-      }
-
+      // Don't pause any videos - let them continue playing
+      // Only update current video index
       setCurrentVideoIndex(currentIndex);
+      
+      // Auto-play the new current video if it's not playing
+      setTimeout(() => {
+        if (videoRefs.current[currentIndex] && videoRefs.current[currentIndex].paused) {
+          const playPromise = videoRefs.current[currentIndex].play();
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.log("Autoplay prevented:", error);
+            });
+          }
+        }
+      }, 50);
     }
   };
 
@@ -147,12 +146,14 @@ const ReelsContainer = ({
   // Auto-play first video on load
   useEffect(() => {
     if (videos.length > 0 && videoRefs.current[0]) {
-      const playPromise = videoRefs.current[0].play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.log("Initial autoplay prevented:", error);
-        });
-      }
+      setTimeout(() => {
+        const playPromise = videoRefs.current[0].play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.log("Initial autoplay prevented:", error);
+          });
+        }
+      }, 300);
     }
   }, [videos]);
 

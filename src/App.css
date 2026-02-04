@@ -1,4 +1,4 @@
-/* App.css - Enhanced Global Styles */
+/* App.css - Adjusted for progress bar */
 * {
   margin: 0;
   padding: 0;
@@ -30,17 +30,16 @@ body {
 
 /* Enhanced scrollbar styling for desktop */
 @media (hover: hover) and (pointer: fine) {
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  .reels-container::-webkit-scrollbar {
+    width: 6px;
   }
 
-  ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
+  .reels-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 4px;
   }
 
-  ::-webkit-scrollbar-thumb {
+  .reels-container::-webkit-scrollbar-thumb {
     background: linear-gradient(
       180deg,
       rgba(255, 0, 68, 0.4) 0%,
@@ -52,13 +51,12 @@ body {
     transition: all 0.3s ease;
   }
 
-  ::-webkit-scrollbar-thumb:hover {
+  .reels-container::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(
       180deg,
       rgba(255, 0, 68, 0.6) 0%,
       rgba(255, 107, 107, 0.5) 100%
     );
-    border: 1px solid transparent;
   }
 
   ::-webkit-scrollbar-corner {
@@ -97,148 +95,6 @@ textarea {
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
-}
-
-/* Enhanced Common Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes popIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes glow {
-  0%,
-  100% {
-    box-shadow: 0 0 10px rgba(255, 0, 68, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 0, 68, 0.6);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -100% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
 }
 
 /* iPhone notch/pill and safe areas */
@@ -326,101 +182,12 @@ textarea {
   }
 }
 
-/* Dark mode/light mode considerations */
-@media (prefers-color-scheme: light) {
-  body {
-    background: #f5f5f5;
-  }
-
-  .smartshorts-app {
-    background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
-  }
-
-  .remove-video-btn {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(0, 0, 0, 0.15);
-    box-shadow: 
-      0 4px 16px rgba(0, 0, 0, 0.15),
-      inset 0 1px 2px rgba(255, 255, 255, 0.5);
-  }
-
-  .remove-icon {
-    fill: #ff3333;
-  }
-
-  .remove-video-btn::after {
-    background: rgba(255, 255, 255, 0.98);
-    color: #000;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  }
-
-  .remove-video-btn:hover {
-    background: rgba(255, 200, 200, 0.95);
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .smartshorts-app {
-    border: 2px solid white;
-  }
-
-  * {
-    outline-offset: 2px;
-  }
-
-  button:focus-visible {
-    outline: 3px solid white;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 /* Focus styles for accessibility */
 button:focus-visible,
 input:focus-visible,
 a:focus-visible {
   outline: 2px solid #ff0844;
   outline-offset: 2px;
-}
-
-/* Custom utility classes */
-.gradient-text {
-  background: linear-gradient(135deg, #ff0844, #ff6b6b, #ffaa00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.glass-effect {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.shadow-glow {
-  box-shadow: 0 4px 16px rgba(255, 0, 68, 0.3);
-}
-
-/* Loading states */
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: #ff0844;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
 }
 
 /* Touch feedback */
