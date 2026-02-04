@@ -1,5 +1,5 @@
 // components/VideoItem.jsx - Updated
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./VideoItem.css";
 
 const VideoItem = ({
@@ -10,19 +10,35 @@ const VideoItem = ({
   isLooping,
   onVideoEnd,
   onRemove,
+  pauseAllOtherVideos,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showRemoveBtn, setShowRemoveBtn] = useState(false);
+  const [showRemoveBtn, setShowRemoveBtn] = useState(true); // Always show remove button
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isSeeking, setIsSeeking] = useState(false);
+  const progressContainerRef = useRef(null);
+  
+  // Reset progress bar when video becomes current
+  useEffect(() => {
+    if (isCurrent) {
+      const videoElement = videoRefs.current[index];
+      if (videoElement) {
+        setCurrentTime(videoElement.currentTime);
+      }
+    }
+  }, [isCurrent, index, videoRefs]);
 
-  // Auto-play when video becomes current OR when component mounts with videos
+  // Auto-play when video becomes current
   useEffect(() => {
     const videoElement = videoRefs.current[index];
     if (!videoElement) return;
 
-    // Always try to play when video is current
-    if (isCurrent && videoElement.paused) {
+    if (isCurrent) {
+      // Pause all other videos
+      pauseAllOtherVideos(index);
+      
+      // Try to play current video
       const playVideo = () => {
         const playPromise = videoElement.play();
         if (playPromise !== undefined) {
@@ -35,9 +51,14 @@ const VideoItem = ({
       // Small delay to ensure video is ready
       setTimeout(playVideo, 100);
       setIsPlaying(true);
-      setShowRemoveBtn(true);
+    } else {
+      // Pause this video if it's not current
+      if (!videoElement.paused) {
+        videoElement.pause();
+        setIsPlaying(false);
+      }
     }
-  }, [isCurrent, index, videoRefs]);
+  }, [isCurrent, index, videoRefs, pauseAllOtherVideos]);
 
   const handleVideoTouch = () => {
     const videoElement = videoRefs.current[index];
@@ -48,33 +69,26 @@ const VideoItem = ({
         .play()
         .then(() => {
           setIsPlaying(true);
-          setShowRemoveBtn(true);
         })
         .catch(console.error);
     } else {
       videoElement.pause();
       setIsPlaying(false);
-      setShowRemoveBtn(false);
     }
   };
 
   const handleVideoPlay = () => {
     setIsPlaying(true);
-    setShowRemoveBtn(true);
   };
 
   const handleVideoPause = () => {
     setIsPlaying(false);
-    setShowRemoveBtn(false);
   };
 
   const handleTimeUpdate = () => {
     const videoElement = videoRefs.current[index];
-    if (videoElement) {
+    if (videoElement && isCurrent) {
       setCurrentTime(videoElement.currentTime);
-      if (videoElement.duration && !isNaN(videoElement.duration)) {
-        setDuration(videoElement.duration);
-      }
     }
   };
 
@@ -85,16 +99,36 @@ const VideoItem = ({
     }
   };
 
+  // Manual seeking functionality
+  const handleProgressMouseDown = (e) => {
+    e.stopPropagation();
+    setIsSeeking(true);
+    handleProgressClick(e);
+  };
+
+  const handleProgressMouseMove = (e) => {
+    if (isSeeking && isCurrent) {
+      handleProgressClick(e);
+    }
+  };
+
+  const handleProgressMouseUp = () => {
+    setIsSeeking(false);
+  };
+
   const handleProgressClick = (e) => {
+    if (!isCurrent) return;
+    
     e.stopPropagation();
     const videoElement = videoRefs.current[index];
     if (!videoElement || !duration) return;
 
-    const progressBar = e.currentTarget;
+    const progressBar = progressContainerRef.current;
+    if (!progressBar) return;
+
     const rect = progressBar.getBoundingClientRect();
-    const clickPosition = e.clientX - rect.left;
-    const progressBarWidth = progressBar.clientWidth;
-    const percentage = Math.min(Math.max(clickPosition / progressBarWidth, 0), 1);
+    const clickPosition = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+    const percentage = clickPosition / rect.width;
     const newTime = percentage * duration;
 
     videoElement.currentTime = newTime;
@@ -157,6 +191,31 @@ const VideoItem = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Add event listeners for seeking
+  useEffect(() => {
+    const handleGlobalMouseMove = (e) => {
+      if (isSeeking) {
+        handleProgressMouseMove(e);
+      }
+    };
+
+    const handleGlobalMouseUp = () => {
+      if (isSeeking) {
+        setIsSeeking(false);
+      }
+    };
+
+    if (isSeeking) {
+      document.addEventListener("mousemove", handleGlobalMouseMove);
+      document.addEventListener("mouseup", handleGlobalMouseUp);
+      
+      return () => {
+        document.removeEventListener("mousemove", handleGlobalMouseMove);
+        document.removeEventListener("mouseup", handleGlobalMouseUp);
+      };
+    }
+  }, [isSeeking]);
+
   return (
     <div
       id={`video-wrapper-${index}`}
@@ -181,22 +240,20 @@ const VideoItem = ({
           loop={!isLooping}
         />
 
-        {/* Remove Button - Shows when video is playing */}
-        {showRemoveBtn && isPlaying && (
-          <button
-            className="remove-video-btn"
-            onClick={handleRemoveClick}
-            aria-label="Remove video"
+        {/* Remove Button - ALWAYS VISIBLE */}
+        <button
+          className="remove-video-btn"
+          onClick={handleRemoveClick}
+          aria-label="Remove video"
+        >
+          <svg
+            className="remove-icon"
+            viewBox="0 0 24 24"
+            fill="currentColor"
           >
-            <svg
-              className="remove-icon"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-            </svg>
-          </button>
-        )}
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+          </svg>
+        </button>
 
         {/* Play Overlay - Shows when video is paused */}
         {!isPlaying && (
@@ -205,18 +262,34 @@ const VideoItem = ({
           </div>
         )}
 
-        {/* Video Progress Bar - Only on mobile */}
-        <div className="video-progress-container" onClick={handleProgressClick}>
+        {/* Video Progress Bar - Only on mobile, only for current video */}
+        {isCurrent && (
           <div 
-            className="video-progress-bar" 
-            style={{ 
-              width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' 
-            }}
-          />
-          <div className="progress-time">
-            {formatTime(currentTime)} / {formatTime(duration)}
+            className="video-progress-container" 
+            ref={progressContainerRef}
+            onClick={handleProgressClick}
+            onMouseDown={handleProgressMouseDown}
+            onTouchStart={handleProgressMouseDown}
+          >
+            <div 
+              className="video-progress-bar" 
+              style={{ 
+                width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' 
+              }}
+            />
+            <div className="progress-time">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </div>
+            
+            {/* Seek handle */}
+            <div 
+              className="seek-handle" 
+              style={{ 
+                left: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' 
+              }}
+            />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

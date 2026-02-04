@@ -1,4 +1,4 @@
-// components/ReelsContainer.jsx - Updated with better auto-play
+// components/ReelsContainer.jsx - Updated
 import React, { useEffect } from "react";
 import VideoItem from "./VideoItem";
 import "./ReelsContainer.css";
@@ -14,6 +14,15 @@ const ReelsContainer = ({
   setTimerPopup,
   setVideos,
 }) => {
+  // Function to pause all other videos except the current one
+  const pauseAllOtherVideos = (currentIndex) => {
+    videoRefs.current.forEach((video, index) => {
+      if (video && index !== currentIndex && !video.paused) {
+        video.pause();
+      }
+    });
+  };
+
   const handleVideoEnd = (index) => {
     const video = videoRefs.current[index];
     if (!video) return;
@@ -106,6 +115,11 @@ const ReelsContainer = ({
     }
 
     if (currentIndex !== currentVideoIndex) {
+      // Pause current video before switching
+      if (videoRefs.current[currentVideoIndex]) {
+        videoRefs.current[currentVideoIndex].pause();
+      }
+      
       setCurrentVideoIndex(currentIndex);
       
       // Auto-play the new current video
@@ -133,6 +147,9 @@ const ReelsContainer = ({
   // Auto-play when videos are uploaded or when videos array changes
   useEffect(() => {
     if (videos.length > 0 && videoRefs.current[currentVideoIndex]) {
+      // Pause all other videos first
+      pauseAllOtherVideos(currentVideoIndex);
+      
       // Wait a bit for video to load, then try to play
       const timer = setTimeout(() => {
         const videoElement = videoRefs.current[currentVideoIndex];
@@ -171,6 +188,7 @@ const ReelsContainer = ({
             isLooping={isLooping}
             onVideoEnd={() => handleVideoEnd(index)}
             onRemove={handleRemoveVideo}
+            pauseAllOtherVideos={pauseAllOtherVideos}
           />
         ))
       ) : (

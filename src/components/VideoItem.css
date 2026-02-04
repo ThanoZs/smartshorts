@@ -1,4 +1,4 @@
-/* components/VideoItem.css - Updated */
+/* components/VideoItem.css - Updated with manual seeking */
 .video-wrapper {
   width: 100%;
   scroll-snap-align: start;
@@ -39,7 +39,7 @@
   bottom: 64px; /* Positioned exactly at top of footer */
   left: 0;
   right: 0;
-  height: 4px;
+  height: 12px; /* Increased height for better touch */
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   cursor: pointer;
@@ -48,6 +48,9 @@
   border-radius: 0;
   margin: 0;
   padding: 0;
+  display: flex;
+  align-items: center;
+  touch-action: none;
 }
 
 /* HIDE PROGRESS BAR ON DESKTOP */
@@ -58,7 +61,7 @@
 }
 
 .video-progress-container:hover {
-  height: 6px;
+  height: 14px;
   background: rgba(0, 0, 0, 0.8);
 }
 
@@ -66,10 +69,30 @@
   height: 100%;
   background: linear-gradient(90deg, #ff0844, #ff6b6b);
   width: 0%;
-  transition: width 0.1s linear;
+  transition: width 0.05s linear;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 0 10px rgba(255, 8, 68, 0.3);
+}
+
+/* Seek handle for manual seeking */
+.seek-handle {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  z-index: 95;
+  transition: all 0.1s ease;
+}
+
+.seek-handle:active {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.2);
 }
 
 /* Remove video info and indicators - COMPLETELY REMOVED */
@@ -81,7 +104,7 @@
   display: none !important;
 }
 
-/* Remove Video Button - UPDATED POSITION */
+/* Remove Video Button - UPDATED POSITION - ALWAYS VISIBLE */
 .remove-video-btn {
   position: absolute;
   top: 20px;
@@ -99,12 +122,14 @@
   z-index: 20;
   transition: all 0.3s ease;
   padding: 0;
+  opacity: 0.9;
 }
 
 .remove-video-btn:hover {
-  background: rgba(255, 0, 0, 0.3);
-  border-color: rgba(255, 0, 0, 0.5);
+  background: rgba(255, 0, 0, 0.5);
+  border-color: rgba(255, 0, 0, 0.7);
   transform: scale(1.1);
+  opacity: 1;
 }
 
 .remove-video-btn:active {
@@ -146,8 +171,8 @@
 
 .progress-time {
   position: absolute;
-  bottom: 10px;
-  right: 0;
+  bottom: 15px;
+  right: 10px;
   font-size: 11px;
   font-weight: 600;
   color: white;
@@ -164,6 +189,11 @@
 }
 
 .video-progress-container:hover .progress-time {
+  opacity: 1;
+}
+
+/* Show time when seeking */
+.video-progress-container.seeking .progress-time {
   opacity: 1;
 }
 
@@ -189,11 +219,16 @@
   
   .video-progress-container {
     bottom: 58px;
-    height: 3px;
+    height: 10px;
   }
 
   .video-progress-container:hover {
-    height: 4px;
+    height: 12px;
+  }
+
+  .seek-handle {
+    width: 18px;
+    height: 18px;
   }
 
   .play-icon {
@@ -215,7 +250,7 @@
   .progress-time {
     font-size: 10px;
     padding: 3px 6px;
-    bottom: 8px;
+    bottom: 13px;
   }
 }
 
@@ -235,7 +270,12 @@
 @media (orientation: landscape) and (max-height: 500px) {
   .video-progress-container {
     bottom: 52px;
-    height: 2px;
+    height: 8px;
+  }
+  
+  .seek-handle {
+    width: 16px;
+    height: 16px;
   }
   
   .progress-time {
