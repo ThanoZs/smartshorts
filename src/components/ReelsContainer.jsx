@@ -1,4 +1,4 @@
-// components/ReelsContainer.jsx - Updated with scrollbar removal
+// components/ReelsContainer.jsx - Updated with better auto-play
 import React, { useEffect } from "react";
 import VideoItem from "./VideoItem";
 import "./ReelsContainer.css";
@@ -19,12 +19,10 @@ const ReelsContainer = ({
     if (!video) return;
 
     if (isLooping && index === currentVideoIndex) {
-      // Loop is ON: go to next video
       const nextIndex = (currentVideoIndex + 1) % videos.length;
       setCurrentVideoIndex(nextIndex);
       scrollToVideo(nextIndex);
     } else if (!isLooping && index === currentVideoIndex) {
-      // Loop is OFF: restart the same video
       video.currentTime = 0;
       const playPromise = video.play();
       if (playPromise !== undefined) {
@@ -36,27 +34,22 @@ const ReelsContainer = ({
   };
 
   const handleRemoveVideo = (indexToRemove) => {
-    // Clean up the video URL to prevent memory leaks
     if (videos[indexToRemove]?.url?.startsWith("blob:")) {
       URL.revokeObjectURL(videos[indexToRemove].url);
     }
 
-    // Remove the video from the array
     const newVideos = videos.filter((_, index) => index !== indexToRemove);
     setVideos(newVideos);
 
-    // Update videoRefs to maintain correct references
     videoRefs.current = videoRefs.current.filter(
       (_, index) => index !== indexToRemove
     );
 
-    // If we removed the current video
     if (indexToRemove === currentVideoIndex) {
       if (newVideos.length > 0) {
-        // If there are still videos, go to the next one or previous if at end
         const newIndex = Math.min(indexToRemove, newVideos.length - 1);
         setCurrentVideoIndex(newIndex);
-
+        
         // Auto-play the new current video
         setTimeout(() => {
           if (videoRefs.current[newIndex]) {
@@ -69,11 +62,9 @@ const ReelsContainer = ({
           }
         }, 100);
       } else {
-        // No videos left
         setCurrentVideoIndex(0);
       }
     } else if (indexToRemove < currentVideoIndex) {
-      // Adjust current index if a video before current was removed
       setCurrentVideoIndex((prev) => prev - 1);
     }
   };
@@ -98,7 +89,6 @@ const ReelsContainer = ({
     let currentIndex = 0;
     let minDistance = Infinity;
 
-    // Calculate which video is most visible
     for (let i = 0; i < videos.length; i++) {
       const wrapperElement = document.getElementById(`video-wrapper-${i}`);
       if (wrapperElement) {
@@ -116,11 +106,9 @@ const ReelsContainer = ({
     }
 
     if (currentIndex !== currentVideoIndex) {
-      // Don't pause any videos - let them continue playing
-      // Only update current video index
       setCurrentVideoIndex(currentIndex);
       
-      // Auto-play the new current video if it's not playing
+      // Auto-play the new current video
       setTimeout(() => {
         if (videoRefs.current[currentIndex] && videoRefs.current[currentIndex].paused) {
           const playPromise = videoRefs.current[currentIndex].play();
@@ -134,7 +122,6 @@ const ReelsContainer = ({
     }
   };
 
-  // Add scroll event listener
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
@@ -143,19 +130,25 @@ const ReelsContainer = ({
     }
   }, [videos, currentVideoIndex]);
 
-  // Auto-play first video on load
+  // Auto-play when videos are uploaded or when videos array changes
   useEffect(() => {
-    if (videos.length > 0 && videoRefs.current[0]) {
-      setTimeout(() => {
-        const playPromise = videoRefs.current[0].play();
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.log("Initial autoplay prevented:", error);
-          });
+    if (videos.length > 0 && videoRefs.current[currentVideoIndex]) {
+      // Wait a bit for video to load, then try to play
+      const timer = setTimeout(() => {
+        const videoElement = videoRefs.current[currentVideoIndex];
+        if (videoElement && videoElement.paused) {
+          const playPromise = videoElement.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.log("Autoplay prevented:", error);
+            });
+          }
         }
       }, 300);
+      
+      return () => clearTimeout(timer);
     }
-  }, [videos]);
+  }, [videos, currentVideoIndex]);
 
   return (
     <main 
@@ -163,8 +156,8 @@ const ReelsContainer = ({
       ref={containerRef}
       style={{ 
         overflowY: 'auto',
-        scrollbarWidth: 'none', /* Firefox */
-        msOverflowStyle: 'none', /* IE and Edge */
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
       }}
     >
       {videos.length > 0 ? (

@@ -1,4 +1,4 @@
-/* components/VideoItem.css - Fixed height calculation */
+/* components/VideoItem.css - Updated */
 .video-wrapper {
   width: 100%;
   scroll-snap-align: start;
@@ -8,29 +8,11 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: calc(100vh - 128px); /* Correct calculation: 100vh - (header64 + footer64) */
+  height: calc(100vh - 128px);
   min-height: calc(100vh - 128px);
   max-height: calc(100vh - 128px);
   margin: 0 auto;
   overflow: hidden;
-}
-
-/* Responsive adjustments for VideoItem */
-@media (max-width: 430px) {
-  .video-wrapper {
-    height: calc(100vh - 116px); /* 100vh - (header58 + footer58) */
-    min-height: calc(100vh - 116px);
-    max-height: calc(100vh - 116px);
-  }
-}
-
-/* Landscape mode adjustments */
-@media (orientation: landscape) and (max-height: 500px) {
-  .video-wrapper {
-    height: calc(100vh - 104px); /* 100vh - (header52 + footer52) */
-    min-height: calc(100vh - 104px);
-    max-height: calc(100vh - 104px);
-  }
 }
 
 .video-container {
@@ -51,10 +33,9 @@
   object-fit: cover;
 }
 
-/* components/VideoItem.css - Fixed progress bar position */
-/* Video Progress Bar - FIXED AT TOP OF FOOTER */
+/* Video Progress Bar - ONLY ON MOBILE - FIXED AT TOP OF FOOTER */
 .video-progress-container {
-  position: fixed; /* Changed to fixed */
+  position: fixed;
   bottom: 64px; /* Positioned exactly at top of footer */
   left: 0;
   right: 0;
@@ -62,31 +43,17 @@
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   cursor: pointer;
-  z-index: 90; /* Lower than footer but above videos */
+  z-index: 90;
   transition: all 0.2s ease;
   border-radius: 0;
-  margin: 0; /* Remove any margin */
-  padding: 0; /* Remove any padding */
+  margin: 0;
+  padding: 0;
 }
 
-/* Responsive adjustments for VideoItem */
-@media (max-width: 430px) {
+/* HIDE PROGRESS BAR ON DESKTOP */
+@media (min-width: 769px) {
   .video-progress-container {
-    bottom: 58px; /* Adjusted for smaller footer */
-  }
-}
-
-/* Landscape mode adjustments */
-@media (orientation: landscape) and (max-height: 500px) {
-  .video-progress-container {
-    bottom: 52px;
-  }
-}
-
-/* iPhone 15 Pro specific adjustments */
-@media (max-width: 430px) and (min-height: 800px) {
-  .video-progress-container {
-    bottom: 70px;
+    display: none;
   }
 }
 
@@ -103,100 +70,22 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(255, 8, 68, 0.3);
-  border-radius: 0;
 }
 
-/* Remove scrollbar for all browsers */
-.reels-container {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-.reels-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-/* Responsive adjustments for VideoItem */
-@media (max-width: 430px) {
-  .video-wrapper {
-    height: calc(100vh - 116px); /* Adjusted for smaller header/footer */
-    min-height: calc(100vh - 116px);
-  }
-  
-  .video-progress-container {
-    bottom: 58px; /* Adjusted for smaller footer */
-  }
-}
-
-.play-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  pointer-events: none;
-  z-index: 5;
-}
-
-.play-icon {
-  font-size: 48px;
-  opacity: 0.8;
-  animation: pulse 2s infinite;
-}
-
-.video-info {
-  position: absolute;
-  top: calc(16px + env(safe-area-inset-top, 0px)); /* Moved to top, with notch offset */
-  left: 0;
-  right: 0;
-  padding: 16px;
-  background: linear-gradient(rgba(0, 0, 0, 0.8), transparent);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  pointer-events: none;
-  z-index: 8;
-}
-
-.video-name {
-  font-size: 14px;
-  opacity: 0.9;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-right: 12px;
-}
-
-.video-indicators {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
+/* Remove video info and indicators - COMPLETELY REMOVED */
+.video-info,
+.video-name,
+.video-indicators,
 .status-indicator,
 .loop-indicator {
-  font-size: 16px;
-  opacity: 0.8;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 4px 8px;
-  border-radius: 6px;
+  display: none !important;
 }
 
-.loop-indicator {
-  animation: spin 3s linear infinite;
-}
-
-/* Remove Video Button */
+/* Remove Video Button - UPDATED POSITION */
 .remove-video-btn {
   position: absolute;
-  top: calc(16px + env(safe-area-inset-top, 0px));
-  right: 16px;
+  top: 20px;
+  right: 20px;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -207,10 +96,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
+  z-index: 20;
   transition: all 0.3s ease;
   padding: 0;
-  animation: slideInRight 0.3s ease;
 }
 
 .remove-video-btn:hover {
@@ -234,84 +122,26 @@
   fill: #ff0000;
 }
 
-/* Tooltip for remove button */
-.remove-video-btn::after {
-  content: "Remove Video";
-  position: absolute;
-  top: 50%;
-  right: 50px;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 100;
-}
-
-.remove-video-btn:hover::after {
-  opacity: 1;
-}
-
-/* Video Progress Bar - POSITIONED ABOVE FOOTER */
-.video-progress-container {
-  position: absolute;
-  bottom: 70px; /* Positioned above footer */
-  left: 16px;
-  right: 16px;
-  height: 4px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  cursor: pointer;
-  z-index: 9;
-  transition: all 0.2s ease;
-  border-radius: 2px;
-}
-
-.video-progress-container:hover {
-  height: 6px;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.video-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #ff0844, #ff6b6b);
-  width: 0%;
-  transition: width 0.1s linear;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(255, 8, 68, 0.3);
-  border-radius: 2px;
-}
-
-.video-progress-bar::after {
-  content: '';
+/* Play Overlay */
+.play-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  animation: progressShimmer 2s infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  z-index: 5;
 }
 
-@keyframes progressShimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+.play-icon {
+  font-size: 48px;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
 }
 
 .progress-time {
@@ -339,8 +169,7 @@
 
 /* Animations */
 @keyframes pulse {
-  0%,
-  100% {
+  0%, 100% {
     transform: scale(1);
     opacity: 0.8;
   }
@@ -350,47 +179,29 @@
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Responsive adjustments for VideoItem */
+/* Responsive adjustments */
 @media (max-width: 430px) {
   .video-wrapper {
+    height: calc(100vh - 116px);
     min-height: calc(100vh - 116px);
+    max-height: calc(100vh - 116px);
+  }
+  
+  .video-progress-container {
+    bottom: 58px;
+    height: 3px;
+  }
+
+  .video-progress-container:hover {
+    height: 4px;
   }
 
   .play-icon {
     font-size: 36px;
   }
 
-  .video-info {
-    top: calc(12px + env(safe-area-inset-top, 0px));
-    padding: 12px;
-  }
-
-  .video-name {
-    font-size: 12px;
-  }
-
   .remove-video-btn {
-    top: calc(12px + env(safe-area-inset-top, 0px));
+    top: 12px;
     right: 12px;
     width: 40px;
     height: 40px;
@@ -399,21 +210,6 @@
   .remove-icon {
     width: 20px;
     height: 20px;
-  }
-
-  .remove-video-btn::after {
-    display: none;
-  }
-
-  .video-progress-container {
-    bottom: 62px; /* Adjusted for smaller footer */
-    height: 3px;
-    left: 12px;
-    right: 12px;
-  }
-
-  .video-progress-container:hover {
-    height: 4px;
   }
 
   .progress-time {
@@ -425,68 +221,32 @@
 
 /* iPhone 15 Pro specific adjustments */
 @media (max-width: 430px) and (min-height: 800px) {
-  .video-info {
-    top: calc(20px + env(safe-area-inset-top, 0px));
+  .video-progress-container {
+    bottom: 70px;
   }
   
   .remove-video-btn {
-    top: calc(20px + env(safe-area-inset-top, 0px));
-  }
-  
-  .video-progress-container {
-    bottom: 70px;
+    top: 20px;
+    right: 20px;
   }
 }
 
 /* Landscape mode adjustments */
 @media (orientation: landscape) and (max-height: 500px) {
-  .video-info {
-    top: calc(8px + env(safe-area-inset-top, 0px));
-    padding: 8px 12px;
-  }
-
-  .video-name {
-    font-size: 11px;
-  }
-
-  .remove-video-btn {
-    top: calc(8px + env(safe-area-inset-top, 0px));
-    right: 8px;
-    width: 36px;
-    height: 36px;
-  }
-
   .video-progress-container {
     bottom: 52px;
     height: 2px;
-    left: 8px;
-    right: 8px;
   }
   
   .progress-time {
     font-size: 9px;
     padding: 2px 4px;
   }
-}
-
-/* High contrast mode */
-@media (prefers-contrast: high) {
-  .video-progress-bar {
-    background: #ff0844;
-    border: 1px solid white;
-  }
-
+  
   .remove-video-btn {
-    border-width: 2px;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .video-progress-bar::after,
-  .play-icon,
-  .loop-indicator,
-  .remove-video-btn {
-    animation: none !important;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
   }
 }

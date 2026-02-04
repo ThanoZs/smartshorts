@@ -1,4 +1,4 @@
-// components/VideoItem.jsx - Updated with progress bar and auto-play fix
+// components/VideoItem.jsx - Updated
 import React, { useState, useEffect } from "react";
 import "./VideoItem.css";
 
@@ -16,27 +16,26 @@ const VideoItem = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Auto-play when video becomes current
+  // Auto-play when video becomes current OR when component mounts with videos
   useEffect(() => {
     const videoElement = videoRefs.current[index];
     if (!videoElement) return;
 
-    if (isCurrent) {
-      // Always play when video becomes current
-      const playPromise = videoElement.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.log("Autoplay prevented:", error);
-        });
-      }
+    // Always try to play when video is current
+    if (isCurrent && videoElement.paused) {
+      const playVideo = () => {
+        const playPromise = videoElement.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.log("Autoplay prevented:", error);
+          });
+        }
+      };
+
+      // Small delay to ensure video is ready
+      setTimeout(playVideo, 100);
       setIsPlaying(true);
       setShowRemoveBtn(true);
-    } else {
-      // Don't pause when video is not current
-      // Let it continue playing if it was already playing
-      if (videoElement.paused) {
-        setIsPlaying(false);
-      }
     }
   }, [isCurrent, index, videoRefs]);
 
@@ -87,7 +86,7 @@ const VideoItem = ({
   };
 
   const handleProgressClick = (e) => {
-    e.stopPropagation(); // Don't trigger video play/pause
+    e.stopPropagation();
     const videoElement = videoRefs.current[index];
     if (!videoElement || !duration) return;
 
@@ -103,7 +102,7 @@ const VideoItem = ({
   };
 
   const handleRemoveClick = (e) => {
-    e.stopPropagation(); // Prevent triggering video play/pause
+    e.stopPropagation();
     onRemove(index);
   };
 
@@ -182,7 +181,7 @@ const VideoItem = ({
           loop={!isLooping}
         />
 
-        {/* Remove Button - Only shows when video is playing */}
+        {/* Remove Button - Shows when video is playing */}
         {showRemoveBtn && isPlaying && (
           <button
             className="remove-video-btn"
@@ -199,14 +198,14 @@ const VideoItem = ({
           </button>
         )}
 
-        {/* Play Overlay */}
+        {/* Play Overlay - Shows when video is paused */}
         {!isPlaying && (
           <div className="play-overlay">
             <div className="play-icon">▶️</div>
           </div>
         )}
 
-        {/* Video Progress Bar */}
+        {/* Video Progress Bar - Only on mobile */}
         <div className="video-progress-container" onClick={handleProgressClick}>
           <div 
             className="video-progress-bar" 
@@ -217,16 +216,6 @@ const VideoItem = ({
           <div className="progress-time">
             {formatTime(currentTime)} / {formatTime(duration)}
           </div>
-        </div>
-      </div>
-
-      <div className="video-info">
-        <span className="video-name">{video.name}</span>
-        <div className="video-indicators">
-          <span className="status-indicator">{isPlaying ? "▶️" : "⏸️"}</span>
-          {!isLooping && isCurrent && (
-            <span className="loop-indicator">🔄</span>
-          )}
         </div>
       </div>
     </div>

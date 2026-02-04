@@ -1,4 +1,4 @@
-// App.jsx - Updated with all fixes
+// App.jsx - Updated with better video ref handling
 import React, { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
 import ReelsContainer from "./components/ReelsContainer";
@@ -21,14 +21,38 @@ const SmartShorts = () => {
   const sleepTimerRef = useRef(null);
   const countdownIntervalRef = useRef(null);
 
-  // Handle video upload
+  // Handle video upload - AUTO-PLAY FIRST VIDEO
   const handleVideoUpload = (newVideos) => {
-    setVideos((prev) => [...prev, ...newVideos]);
+    const updatedVideos = [...videos, ...newVideos];
+    setVideos(updatedVideos);
+    
+    // If this is the first video or first upload, set current index to first video
+    if (videos.length === 0 && newVideos.length > 0) {
+      setCurrentVideoIndex(0);
+    }
   };
+
+  // Auto-play when current video index changes
+  useEffect(() => {
+    if (videos.length > 0 && videoRefs.current[currentVideoIndex]) {
+      const timer = setTimeout(() => {
+        const videoElement = videoRefs.current[currentVideoIndex];
+        if (videoElement && videoElement.paused) {
+          const playPromise = videoElement.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.log("Autoplay prevented:", error);
+            });
+          }
+        }
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentVideoIndex, videos]);
 
   // Start sleep timer
   const startSleepTimer = (hours, minutes) => {
-    // Clear any existing timer
     if (sleepTimerRef.current) {
       clearTimeout(sleepTimerRef.current);
     }
@@ -41,7 +65,6 @@ const SmartShorts = () => {
     setIsTimerActive(true);
     setTimerDuration({ hours, minutes });
 
-    // Start countdown interval
     countdownIntervalRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -52,10 +75,8 @@ const SmartShorts = () => {
       });
     }, 1000);
 
-    // Set timeout for timer completion
     sleepTimerRef.current = setTimeout(() => {
       setTimerPopup(true);
-      // Pause all videos
       videoRefs.current.forEach((video) => {
         if (video && typeof video.pause === "function") {
           video.pause();
@@ -64,7 +85,6 @@ const SmartShorts = () => {
       setIsTimerActive(false);
       setTimeLeft(null);
 
-      // Auto-hide popup after 5 seconds
       setTimeout(() => setTimerPopup(false), 5000);
     }, totalSeconds * 1000);
   };
@@ -83,14 +103,12 @@ const SmartShorts = () => {
     setTimeLeft(null);
   };
 
-  // Cleanup on unmount
+  // Cleanup
   useEffect(() => {
     return () => {
       if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
-      if (countdownIntervalRef.current)
-        clearInterval(countdownIntervalRef.current);
+      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
 
-      // Cleanup object URLs
       videos.forEach((video) => {
         if (video.url && video.url.startsWith("blob:")) {
           URL.revokeObjectURL(video.url);
