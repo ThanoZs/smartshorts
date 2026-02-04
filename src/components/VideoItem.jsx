@@ -1,4 +1,4 @@
-// components/VideoItem.jsx - Updated
+// components/VideoItem.jsx - Updated with ALWAYS VISIBLE remove button
 import React, { useState, useEffect, useRef } from "react";
 import "./VideoItem.css";
 
@@ -13,7 +13,6 @@ const VideoItem = ({
   pauseAllOtherVideos,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showRemoveBtn, setShowRemoveBtn] = useState(true); // Always show remove button
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
@@ -240,7 +239,7 @@ const VideoItem = ({
           loop={!isLooping}
         />
 
-        {/* Remove Button - ALWAYS VISIBLE */}
+        {/* Remove Button - ALWAYS VISIBLE on ALL videos */}
         <button
           className="remove-video-btn"
           onClick={handleRemoveClick}

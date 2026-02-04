@@ -1,4 +1,4 @@
-/* components/VideoItem.css - Updated with manual seeking */
+/* components/VideoItem.css - Updated with ALWAYS VISIBLE remove button */
 .video-wrapper {
   width: 100%;
   scroll-snap-align: start;
@@ -104,7 +104,7 @@
   display: none !important;
 }
 
-/* Remove Video Button - UPDATED POSITION - ALWAYS VISIBLE */
+/* Remove Video Button - ALWAYS VISIBLE on ALL videos */
 .remove-video-btn {
   position: absolute;
   top: 20px;
@@ -115,14 +115,15 @@
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
+  display: flex !important; /* FORCE DISPLAY */
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 20;
   transition: all 0.3s ease;
   padding: 0;
-  opacity: 0.9;
+  opacity: 1 !important; /* FORCE VISIBILITY */
+  visibility: visible !important; /* FORCE VISIBILITY */
 }
 
 .remove-video-btn:hover {
