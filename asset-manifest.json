@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/smartshorts/static/css/main.dbe61f96.css",
-    "main.js": "/smartshorts/static/js/main.9653adbb.js",
+    "main.css": "/smartshorts/static/css/main.92b41a44.css",
+    "main.js": "/smartshorts/static/js/main.0f821836.js",
     "index.html": "/smartshorts/index.html",
-    "main.dbe61f96.css.map": "/smartshorts/static/css/main.dbe61f96.css.map",
-    "main.9653adbb.js.map": "/smartshorts/static/js/main.9653adbb.js.map"
+    "main.92b41a44.css.map": "/smartshorts/static/css/main.92b41a44.css.map",
+    "main.0f821836.js.map": "/smartshorts/static/js/main.0f821836.js.map"
   },
   "entrypoints": [
-    "static/css/main.dbe61f96.css",
-    "static/js/main.9653adbb.js"
+    "static/css/main.92b41a44.css",
+    "static/js/main.0f821836.js"
   ]
 }
