@@ -14,6 +14,9 @@ body {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* FIX: Add padding for fixed header */
+  padding-top: calc(64px + env(safe-area-inset-top, 47px));
 }
 
 .smartshorts-app {
@@ -23,6 +26,9 @@ body {
   background: #0f0f0f;
   position: relative;
   overflow: hidden;
+  
+  /* FIX: Ensure content doesn't hide under header */
+  padding-top: calc(64px + env(safe-area-inset-top, 47px));
 }
 
 /* Hide all scrollbars completely */
@@ -107,12 +113,22 @@ textarea {
   .upload-footer {
     padding-bottom: max(8px, env(safe-area-inset-bottom));
   }
+  
+  /* FIX: Mobile safe area padding */
+  body, .smartshorts-app {
+    padding-top: max(calc(64px + env(safe-area-inset-top, 47px)), 60px);
+  }
 }
 
 /* Responsive */
 @media (max-width: 430px) {
   .app-header { height: 56px; }
   .upload-footer { height: 56px; }
+  
+  /* FIX: Adjust padding for mobile */
+  body, .smartshorts-app {
+    padding-top: calc(60px + env(safe-area-inset-top, 59px));
+  }
 }
 
 @media (min-width: 1025px) {
@@ -133,5 +149,19 @@ button:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 375px) {
+  body, .smartshorts-app {
+    padding-top: calc(56px + env(safe-area-inset-top, 20px));
+  }
+}
+
+/* Landscape mode */
+@media (orientation: landscape) and (max-height: 500px) {
+  body, .smartshorts-app {
+    padding-top: calc(52px + env(safe-area-inset-top, 0px));
   }
 }

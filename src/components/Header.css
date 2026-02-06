@@ -1,4 +1,3 @@
-/* components/Header.css - Fixed for iPhone 15 */
 /* components/Header.css - Fixed */
 .app-header {
   padding: calc(14px + env(safe-area-inset-top)) 20px 14px 20px;
