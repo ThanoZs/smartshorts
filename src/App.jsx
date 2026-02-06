@@ -1,13 +1,15 @@
-// App.jsx - Updated with better video ref handling
+// App.jsx - Updated with splash screen
 import React, { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
 import ReelsContainer from "./components/ReelsContainer";
 import UploadFooter from "./components/UploadFooter";
 import SleepTimerModal from "./components/SleepTimerModal";
 import TimerPopup from "./components/TimerPopup";
+import SplashScreen from "./components/SplashScreen";
 import "./App.css";
 
 const SmartShorts = () => {
+  const [showSplash, setShowSplash] = useState(true);
   const [videos, setVideos] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isLooping, setIsLooping] = useState(false);
@@ -21,12 +23,15 @@ const SmartShorts = () => {
   const sleepTimerRef = useRef(null);
   const countdownIntervalRef = useRef(null);
 
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+  };
+
   // Handle video upload - AUTO-PLAY FIRST VIDEO
   const handleVideoUpload = (newVideos) => {
     const updatedVideos = [...videos, ...newVideos];
     setVideos(updatedVideos);
     
-    // If this is the first video or first upload, set current index to first video
     if (videos.length === 0 && newVideos.length > 0) {
       setCurrentVideoIndex(0);
     }
@@ -121,6 +126,10 @@ const SmartShorts = () => {
   useEffect(() => {
     videoRefs.current = videoRefs.current.slice(0, videos.length);
   }, [videos]);
+
+  if (showSplash) {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
 
   return (
     <div className="smartshorts-app">
