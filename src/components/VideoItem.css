@@ -1,4 +1,4 @@
-/* components/VideoItem.css - Updated with ALWAYS VISIBLE remove button */
+/* components/VideoItem.css - Updated with ALWAYS VISIBLE remove button and fixed heights */
 .video-wrapper {
   width: 100%;
   scroll-snap-align: start;
@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: calc(100vh - 128px);
+  height: calc(100vh - 128px); /* 64px header + 64px footer */
   min-height: calc(100vh - 128px);
   max-height: calc(100vh - 128px);
   margin: 0 auto;
@@ -213,13 +213,13 @@
 /* Responsive adjustments */
 @media (max-width: 430px) {
   .video-wrapper {
-    height: calc(100vh - 116px);
-    min-height: calc(100vh - 116px);
-    max-height: calc(100vh - 116px);
+    height: calc(100vh - 120px); /* 60px header + 60px footer */
+    min-height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
   }
   
   .video-progress-container {
-    bottom: 58px;
+    bottom: 60px; /* Match responsive footer height */
     height: 10px;
   }
 
@@ -269,6 +269,12 @@
 
 /* Landscape mode adjustments */
 @media (orientation: landscape) and (max-height: 500px) {
+  .video-wrapper {
+    height: calc(100vh - 104px);
+    min-height: calc(100vh - 104px);
+    max-height: calc(100vh - 104px);
+  }
+  
   .video-progress-container {
     bottom: 52px;
     height: 8px;

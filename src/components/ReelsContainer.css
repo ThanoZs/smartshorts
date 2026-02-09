@@ -1,5 +1,4 @@
-/* components/ReelsContainer.css - Enhanced Professional Version */
-/* components/ReelsContainer.css - Updated to remove scrollbar */
+/* components/ReelsContainer.css - Updated to remove scrollbar and fix heights */
 .reels-container {
   flex: 1;
   overflow-y: auto;
@@ -45,7 +44,7 @@
 
 /* components/ReelsContainer.css - Updated empty state */
 .empty-state {
-  height: calc(100vh - 128px); /* Match video-wrapper height */
+  height: calc(100vh - 128px); /* 64px header + 64px footer */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -66,7 +65,7 @@
 /* Responsive adjustments for ReelsContainer */
 @media (max-width: 430px) {
   .empty-state {
-    height: calc(100vh - 116px); /* Match responsive video-wrapper height */
+    height: calc(100vh - 120px); /* 60px header + 60px footer */
     padding: 40px 24px;
   }
 }
@@ -213,7 +212,7 @@
 /* Responsive adjustments for ReelsContainer */
 @media (max-width: 430px) {
   .empty-state {
-    height: calc(100vh - 112px);
+    height: calc(100vh - 120px);
     padding: 40px 24px;
   }
 

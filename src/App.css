@@ -1,4 +1,4 @@
-/* App.css - YouTube Dark Theme Style */
+/* App.css - YouTube Dark Theme Style - FIXED */
 * {
   margin: 0;
   padding: 0;
@@ -15,8 +15,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  /* FIX: Add padding for fixed header */
-  padding-top: calc(64px + env(safe-area-inset-top, 47px));
+  /* FIXED: Removed duplicate padding - Header handles safe area */
+  /* padding-top: calc(64px + env(safe-area-inset-top, 47px)); */
+  
+  /* Prevent pull-to-refresh */
+  overscroll-behavior-y: contain;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .smartshorts-app {
@@ -27,8 +34,8 @@ body {
   position: relative;
   overflow: hidden;
   
-  /* FIX: Ensure content doesn't hide under header */
-  padding-top: calc(64px + env(safe-area-inset-top, 47px));
+  /* FIXED: Removed duplicate padding */
+  /* padding-top: calc(64px + env(safe-area-inset-top, 47px)); */
 }
 
 /* Hide all scrollbars completely */
@@ -48,6 +55,7 @@ body {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
+  touch-action: manipulation; /* Improves touch responsiveness */
 }
 
 input,
@@ -105,29 +113,22 @@ textarea {
   to { transform: rotate(360deg); }
 }
 
-/* Safe areas */
+/* iOS 11+ specific safe area handling */
 @supports (padding: max(0px)) {
   .app-header {
-    padding-top: max(8px, env(safe-area-inset-top));
-  }
-  .upload-footer {
-    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    padding-top: max(12px, env(safe-area-inset-top));
   }
   
-  /* FIX: Mobile safe area padding */
-  body, .smartshorts-app {
-    padding-top: max(calc(64px + env(safe-area-inset-top, 47px)), 60px);
+  .upload-footer {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
 }
 
 /* Responsive */
 @media (max-width: 430px) {
-  .app-header { height: 56px; }
-  .upload-footer { height: 56px; }
-  
-  /* FIX: Adjust padding for mobile */
+  /* FIXED: No need for additional body padding */
   body, .smartshorts-app {
-    padding-top: calc(60px + env(safe-area-inset-top, 59px));
+    /* Header handles its own padding */
   }
 }
 
@@ -154,14 +155,10 @@ button:focus-visible {
 
 /* Mobile-specific adjustments */
 @media (max-width: 375px) {
-  body, .smartshorts-app {
-    padding-top: calc(56px + env(safe-area-inset-top, 20px));
-  }
+  /* Header handles its own padding */
 }
 
 /* Landscape mode */
 @media (orientation: landscape) and (max-height: 500px) {
-  body, .smartshorts-app {
-    padding-top: calc(52px + env(safe-area-inset-top, 0px));
-  }
+  /* Header handles its own padding */
 }
