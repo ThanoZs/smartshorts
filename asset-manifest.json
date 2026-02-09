@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/smartshorts/static/css/main.78cad242.css",
+    "main.css": "/smartshorts/static/css/main.232c92f6.css",
     "main.js": "/smartshorts/static/js/main.0e38d38b.js",
     "index.html": "/smartshorts/index.html",
-    "main.78cad242.css.map": "/smartshorts/static/css/main.78cad242.css.map",
+    "main.232c92f6.css.map": "/smartshorts/static/css/main.232c92f6.css.map",
     "main.0e38d38b.js.map": "/smartshorts/static/js/main.0e38d38b.js.map"
   },
   "entrypoints": [
-    "static/css/main.78cad242.css",
+    "static/css/main.232c92f6.css",
     "static/js/main.0e38d38b.js"
   ]
 }
