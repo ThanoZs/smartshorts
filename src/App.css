@@ -1,8 +1,15 @@
-/* App.css - YouTube Dark Theme Style - FIXED */
+/* App.css - YouTube Dark Theme Style - FIXED for mobile browsers */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --header-height: 64px;
+  --footer-height: 64px;
+  --mobile-header-height: 60px;
+  --mobile-footer-height: 60px;
 }
 
 body {
@@ -15,10 +22,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  /* FIXED: Removed duplicate padding - Header handles safe area */
-  /* padding-top: calc(64px + env(safe-area-inset-top, 47px)); */
-  
-  /* Prevent pull-to-refresh */
+  /* Prevent pull-to-refresh and ensure full height */
   overscroll-behavior-y: contain;
   position: fixed;
   width: 100%;
@@ -34,8 +38,12 @@ body {
   position: relative;
   overflow: hidden;
   
-  /* FIXED: Removed duplicate padding */
-  /* padding-top: calc(64px + env(safe-area-inset-top, 47px)); */
+  /* Add bottom padding for fixed footer */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  
+  /* Use dynamic viewport height for mobile */
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
 }
 
 /* Hide all scrollbars completely */
@@ -124,11 +132,37 @@ textarea {
   }
 }
 
-/* Responsive */
+/* Mobile browser specific fixes */
 @media (max-width: 430px) {
-  /* FIXED: No need for additional body padding */
-  body, .smartshorts-app {
-    /* Header handles its own padding */
+  .smartshorts-app {
+    /* Force mobile viewport to be full height */
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
+  }
+  
+  /* Use dynamic viewport units */
+  @supports (height: 100dvh) {
+    .smartshorts-app {
+      height: 100dvh;
+    }
+  }
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  .smartshorts-app {
+    min-height: -webkit-fill-available;
+  }
+  
+  .upload-footer {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 20px));
+  }
+}
+
+/* Handle browser UI changes on mobile */
+@media (max-height: 600px) and (orientation: portrait) {
+  .upload-footer {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 20px));
   }
 }
 
@@ -155,10 +189,22 @@ button:focus-visible {
 
 /* Mobile-specific adjustments */
 @media (max-width: 375px) {
-  /* Header handles its own padding */
+  .smartshorts-app {
+    /* Ensure full height on smaller screens */
+    min-height: -webkit-fill-available;
+  }
 }
 
 /* Landscape mode */
 @media (orientation: landscape) and (max-height: 500px) {
-  /* Header handles its own padding */
+  .smartshorts-app {
+    /* Adjust for landscape with browser UI */
+    padding-bottom: env(safe-area-inset-bottom, 10px);
+  }
+  
+  .upload-footer {
+    height: 52px;
+    min-height: 52px;
+    max-height: 52px;
+  }
 }

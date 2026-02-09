@@ -1,4 +1,4 @@
-/* components/ReelsContainer.css - Updated to remove scrollbar and fix heights */
+/* components/ReelsContainer.css - Updated for fixed footer */
 .reels-container {
   flex: 1;
   overflow-y: auto;
@@ -9,17 +9,24 @@
   position: relative;
   background: linear-gradient(180deg, #000000 0%, #0a0a0c 100%);
   
+  /* Add padding to account for fixed footer */
+  padding-bottom: 64px; /* Desktop footer height */
+  
   /* Hide scrollbar for all browsers */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
 
+/* Responsive adjustments */
+@media (max-width: 430px) {
+  .reels-container {
+    padding-bottom: 60px; /* Mobile footer height */
+  }
+}
+
 .reels-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
-
-/* Remove all scrollbar related styles */
-/* Delete all the scrollbar related CSS from the file */
 
 /* Custom scrollbar for desktop */
 @media (hover: hover) and (pointer: fine) {
@@ -44,7 +51,7 @@
 
 /* components/ReelsContainer.css - Updated empty state */
 .empty-state {
-  height: calc(100vh - 128px); /* 64px header + 64px footer */
+  height: calc(100vh - 128px - 64px); /* Viewport - header - footer padding */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -65,7 +72,7 @@
 /* Responsive adjustments for ReelsContainer */
 @media (max-width: 430px) {
   .empty-state {
-    height: calc(100vh - 120px); /* 60px header + 60px footer */
+    height: calc(100vh - 120px - 60px); /* Viewport - header - footer padding */
     padding: 40px 24px;
   }
 }
@@ -73,10 +80,11 @@
 /* Landscape mode adjustments */
 @media (orientation: landscape) and (max-height: 500px) {
   .empty-state {
-    height: calc(100vh - 104px); /* Match landscape video-wrapper height */
+    height: calc(100vh - 104px - 52px); /* Match landscape video-wrapper height */
     padding: 24px 28px;
   }
 }
+
 @keyframes emptyStateFadeIn {
   from {
     opacity: 0;
@@ -212,7 +220,7 @@
 /* Responsive adjustments for ReelsContainer */
 @media (max-width: 430px) {
   .empty-state {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 120px - 60px);
     padding: 40px 24px;
   }
 

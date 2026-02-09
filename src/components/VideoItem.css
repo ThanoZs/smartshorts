@@ -1,4 +1,4 @@
-/* components/VideoItem.css - Updated with ALWAYS VISIBLE remove button and fixed heights */
+/* components/VideoItem.css - Updated for fixed footer */
 .video-wrapper {
   width: 100%;
   scroll-snap-align: start;
@@ -8,9 +8,9 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: calc(100vh - 128px); /* 64px header + 64px footer */
-  min-height: calc(100vh - 128px);
-  max-height: calc(100vh - 128px);
+  height: calc(100vh - 128px - 64px); /* Viewport - header - footer padding */
+  min-height: calc(100vh - 128px - 64px);
+  max-height: calc(100vh - 128px - 64px);
   margin: 0 auto;
   overflow: hidden;
 }
@@ -33,17 +33,17 @@
   object-fit: cover;
 }
 
-/* Video Progress Bar - ONLY ON MOBILE - FIXED AT TOP OF FOOTER */
+/* Video Progress Bar - ONLY ON MOBILE - Fixed position */
 .video-progress-container {
   position: fixed;
-  bottom: 64px; /* Positioned exactly at top of footer */
+  bottom: 64px; /* Positioned exactly at top of fixed footer */
   left: 0;
   right: 0;
   height: 12px; /* Increased height for better touch */
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   cursor: pointer;
-  z-index: 90;
+  z-index: 999; /* Below footer but above videos */
   transition: all 0.2s ease;
   border-radius: 0;
   margin: 0;
@@ -213,13 +213,13 @@
 /* Responsive adjustments */
 @media (max-width: 430px) {
   .video-wrapper {
-    height: calc(100vh - 120px); /* 60px header + 60px footer */
-    min-height: calc(100vh - 120px);
-    max-height: calc(100vh - 120px);
+    height: calc(100vh - 120px - 60px); /* Viewport - header - footer padding */
+    min-height: calc(100vh - 120px - 60px);
+    max-height: calc(100vh - 120px - 60px);
   }
   
   .video-progress-container {
-    bottom: 60px; /* Match responsive footer height */
+    bottom: 60px; /* Match mobile footer height */
     height: 10px;
   }
 
@@ -270,9 +270,9 @@
 /* Landscape mode adjustments */
 @media (orientation: landscape) and (max-height: 500px) {
   .video-wrapper {
-    height: calc(100vh - 104px);
-    min-height: calc(100vh - 104px);
-    max-height: calc(100vh - 104px);
+    height: calc(100vh - 104px - 52px);
+    min-height: calc(100vh - 104px - 52px);
+    max-height: calc(100vh - 104px - 52px);
   }
   
   .video-progress-container {
