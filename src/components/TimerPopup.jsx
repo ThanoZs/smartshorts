@@ -8,7 +8,7 @@ const TimerPopup = ({ setTimerPopup, setShowTimerModal }) => {
       <div className="popup-content">
         <div className="popup-icon">⏰</div>
         <h3 className="popup-title">Timer Complete</h3>
-        <p className="popup-message">Videos have been paused</p>
+        {/* <p className="popup-message">Videos have been paused</p> */}
 
         <div className="popup-actions">
           <button

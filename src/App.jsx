@@ -90,7 +90,7 @@ const SmartShorts = () => {
       setIsTimerActive(false);
       setTimeLeft(null);
 
-      setTimeout(() => setTimerPopup(false), 5000);
+      setTimeout(() => setTimerPopup(false), 600000 );
     }, totalSeconds * 1000);
   };
 
