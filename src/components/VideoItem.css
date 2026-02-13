@@ -67,12 +67,12 @@
 
 .video-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #ff0844, #ff6b6b);
+  background: linear-gradient(90deg, #084aff, #6bc4ff);
   width: 0%;
   transition: width 0.05s linear;
   position: relative;
   overflow: visible;
-  box-shadow: 0 0 10px rgba(255, 8, 68, 0.3);
+  box-shadow: 0 0 10px rgba(127, 8, 255, 0.3);
 }
 
 /* Seek handle for manual seeking */
@@ -127,8 +127,8 @@
 }
 
 .remove-video-btn:hover {
-  background: rgba(255, 0, 0, 0.5);
-  border-color: rgba(255, 0, 0, 0.7);
+  background: rgba(132, 0, 255, 0.5);
+  border-color: rgba(0, 128, 255, 0.7);
   transform: scale(1.1);
   opacity: 1;
 }
@@ -140,12 +140,12 @@
 .remove-icon {
   width: 24px;
   height: 24px;
-  fill: #ff6b6b;
+  fill: #6bb0ff;
   transition: fill 0.3s ease;
 }
 
 .remove-video-btn:hover .remove-icon {
-  fill: #ff0000;
+  fill: #0044ff;
 }
 
 /* Play Overlay */

@@ -29,9 +29,9 @@ const SplashScreen = ({ onComplete }) => {
           <svg viewBox="0 0 200 200" className="logo-svg">
             <defs>
               <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ff0844" />
-                <stop offset="50%" stopColor="#ff6b6b" />
-                <stop offset="100%" stopColor="#ffaa00" />
+                <stop offset="0%" stopColor="#9c08ff" />
+                <stop offset="50%" stopColor="#6b95ff" />
+                <stop offset="100%" stopColor="#0088ff" />
               </linearGradient>
               <filter id="glow">
                 <feGaussianBlur stdDeviation="3" result="coloredBlur"/>

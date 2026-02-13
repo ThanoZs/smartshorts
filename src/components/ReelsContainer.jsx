@@ -43,40 +43,61 @@ const ReelsContainer = ({
   };
 
   const handleRemoveVideo = (indexToRemove) => {
-    if (videos[indexToRemove]?.url?.startsWith("blob:")) {
-      URL.revokeObjectURL(videos[indexToRemove].url);
+  setVideos((prevVideos) => {
+    if (indexToRemove < 0 || indexToRemove >= prevVideos.length) {
+      return prevVideos; // safety guard
     }
 
-    const newVideos = videos.filter((_, index) => index !== indexToRemove);
-    setVideos(newVideos);
+    const videoToRemove = prevVideos[indexToRemove];
 
+    // Revoke blob URL safely
+    if (videoToRemove?.url?.startsWith("blob:")) {
+      URL.revokeObjectURL(videoToRemove.url);
+    }
+
+    const newVideos = prevVideos.filter(
+      (_, index) => index !== indexToRemove
+    );
+
+    // Update refs safely
     videoRefs.current = videoRefs.current.filter(
       (_, index) => index !== indexToRemove
     );
 
+    // Handle current index logic
     if (indexToRemove === currentVideoIndex) {
       if (newVideos.length > 0) {
-        const newIndex = Math.min(indexToRemove, newVideos.length - 1);
+        const newIndex = Math.min(
+          indexToRemove,
+          newVideos.length - 1
+        );
+
         setCurrentVideoIndex(newIndex);
-        
-        // Auto-play the new current video
+
+        // Autoplay new current video
         setTimeout(() => {
-          if (videoRefs.current[newIndex]) {
-            const playPromise = videoRefs.current[newIndex].play();
+          const video = videoRefs.current[newIndex];
+          if (video) {
+            const playPromise = video.play();
             if (playPromise !== undefined) {
-              playPromise.catch((error) => {
-                console.log("Autoplay after removal prevented:", error);
-              });
+              playPromise.catch((err) =>
+                console.log("Autoplay prevented:", err)
+              );
             }
           }
         }, 100);
       } else {
         setCurrentVideoIndex(0);
       }
-    } else if (indexToRemove < currentVideoIndex) {
-      setCurrentVideoIndex((prev) => prev - 1);
+    } 
+    else if (indexToRemove < currentVideoIndex) {
+      setCurrentVideoIndex((prev) => Math.max(prev - 1, 0));
     }
-  };
+
+    return newVideos;
+  });
+};
+
 
   const scrollToVideo = (index) => {
     const wrapperElement = document.getElementById(`video-wrapper-${index}`);

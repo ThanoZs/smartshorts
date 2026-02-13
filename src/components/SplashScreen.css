@@ -46,7 +46,7 @@
 .logo-svg {
   width: 160px;
   height: 160px;
-  filter: drop-shadow(0 0 30px rgba(255, 8, 68, 0.6));
+  filter: drop-shadow(0 0 30px rgba(8, 140, 255, 0.6));
 }
 
 @keyframes logoFloat {
@@ -97,7 +97,7 @@
 
 .title-letter {
   display: inline-block;
-  background: linear-gradient(135deg, #ff0844 0%, #ff6b6b 50%, #ffaa00 100%);
+  background: linear-gradient(135deg, #0829ff 0%, #6bb5ff 50%, #00d5ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -163,10 +163,10 @@
 
 .loader-bar {
   height: 100%;
-  background: linear-gradient(90deg, #ff0844, #ff6b6b, #ffaa00);
+  background: linear-gradient(90deg, #0825ff, #6b9aff, #00d5ff);
   border-radius: 2px;
   animation: loadProgress 2s ease-in-out;
-  box-shadow: 0 0 10px rgba(255, 8, 68, 0.5);
+  box-shadow: 0 0 10px rgba(8, 37, 255, 0.5);
 }
 
 @keyframes loadProgress {
@@ -202,10 +202,10 @@
   position: absolute;
   width: 4px;
   height: 4px;
-  background: rgba(255, 8, 68, 0.6);
+  background: rgba(8, 8, 255, 0.6);
   border-radius: 50%;
   animation: particleFloat 4s ease-in-out infinite;
-  box-shadow: 0 0 10px rgba(255, 8, 68, 0.8);
+  box-shadow: 0 0 10px rgba(8, 78, 255, 0.8);
 }
 
 @keyframes particleFloat {

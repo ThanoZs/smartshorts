@@ -35,13 +35,13 @@
 .app-title {
   font-size: 22px;
   font-weight: 800;
-  background: linear-gradient(135deg, #ff0844 0%, #ff6b6b 50%, #ffaa00 100%);
+  background: linear-gradient(135deg, #0856ff 0%, #6b97ff 50%, #00c3ff 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.8px;
-  text-shadow: 0 0 30px rgba(255, 8, 68, 0.3);
+  text-shadow: 0 0 30px rgba(8, 86, 255, 0.3);
   animation: gradientShift 8s ease infinite;
   position: relative;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -54,10 +54,10 @@
   left: -12px;
   width: 4px;
   height: 60%;
-  background: linear-gradient(180deg, #ff0844, #ff6b6b);
+  background: linear-gradient(180deg, #0842ff, #6bbcff);
   border-radius: 2px;
   transform: translateY(-50%);
-  box-shadow: 0 0 10px rgba(255, 8, 68, 0.5);
+  box-shadow: 0 0 10px rgba(8, 148, 255, 0.5);
 }
 
 @keyframes gradientShift {
@@ -151,10 +151,10 @@
 }
 
 .timer-text {
-  color: #ff6b6b;
+  color: #6bebff;
   font-weight: 700;
   letter-spacing: 0.3px;
-  text-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+  text-shadow: 0 0 8px rgba(107, 230, 255, 0.3);
 }
 
 .control-btn {
@@ -226,10 +226,10 @@
     rgba(255, 0, 68, 0.18) 0%,
     rgba(255, 107, 107, 0.12) 100%
   );
-  border-color: rgba(255, 0, 68, 0.35);
-  color: #ff6b6b;
+  border-color: rgba(0, 153, 255, 0.35);
+  color: #6bc6ff;
   box-shadow: 
-    0 4px 16px rgba(255, 0, 68, 0.25),
+    0 4px 16px rgba(0, 157, 255, 0.25),
     inset 0 1px 2px rgba(255, 255, 255, 0.1);
   animation: activeGlow 2s ease-in-out infinite;
 }
@@ -237,12 +237,12 @@
 @keyframes activeGlow {
   0%, 100% {
     box-shadow: 
-      0 4px 16px rgba(255, 0, 68, 0.25),
+      0 4px 16px rgba(0, 166, 255, 0.25),
       inset 0 1px 2px rgba(255, 255, 255, 0.1);
   }
   50% {
     box-shadow: 
-      0 6px 20px rgba(255, 0, 68, 0.35),
+      0 6px 20px rgba(0, 115, 255, 0.35),
       inset 0 1px 2px rgba(255, 255, 255, 0.15);
   }
 }
