@@ -77,7 +77,7 @@ const SplashScreen = ({ onComplete }) => {
           <span className="title-letter">s</span>
         </h1>
         
-        <div className="splash-tagline">Your Personal Video Collection</div>
+        <div className="splash-tagline">Your Personal Media Hub</div>
         
         <div className="splash-loader">
           <div className="loader-bar"></div>
